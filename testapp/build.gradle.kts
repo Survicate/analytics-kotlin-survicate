@@ -20,8 +20,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val properties = Properties().apply {
-            load(rootProject.file("local.properties").reader())
+        val localPropertiesFile = rootProject.file("local.properties")
+        val properties = Properties()
+        if (localPropertiesFile.exists() && localPropertiesFile.canRead()) {
+            properties.load(localPropertiesFile.reader())
         }
         val segmentKey = (properties["segment.key"] as? String).orEmpty()
         resValue("string", "segment_key", segmentKey)
