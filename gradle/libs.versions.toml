@@ -1,0 +1,38 @@
+[versions]
+minSdk = "21"
+compileSdk = "34"
+targetSdk = "34"
+kotlin = "1.8.22"
+gradlePlugin = "8.1.2"
+survicateSdk = "3.0.3"
+segmentAnalytics = "1.13.2"
+appcompat = "1.6.1"
+constraintlayout = "2.1.4"
+coreKtx = "1.12.0"
+serializationJson = "1.6.0"
+material = "1.10.0"
+junitBom = "5.8.2"
+junit = "4.13.2"
+junitVintageEngine = "5.8.2"
+mockk = "1.12.4"
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "gradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "gradlePlugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+[libraries]
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationJson" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+segment-analytics = { module = "com.segment.analytics.kotlin:android", version.ref = "segmentAnalytics" }
+survicate-sdk = { module = "com.survicate:survicate-sdk", version.ref = "survicateSdk" }
+
+# Test dependencies
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junitBom" }
+junit = { module = "junit:junit", version.ref = "junit" }
+junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junitVintageEngine" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }

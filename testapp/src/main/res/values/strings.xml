@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">testApp</string>
+    <string name="app_name">Segment Test</string>
+    <string name="log_screen">Log screen</string>
 </resources>
