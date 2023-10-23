@@ -77,7 +77,7 @@ class SurvicateDestinationTest {
         tested.identify(identifyEvent)
 
         val expectedTraits = listOf(
-            UserTrait.UserId("testUserId"),
+            UserTrait("user_id", "testUserId"),
             UserTrait("name", "John Doe"),
             UserTrait("age", "50")
         )

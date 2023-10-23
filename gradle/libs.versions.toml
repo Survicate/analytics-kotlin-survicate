@@ -9,6 +9,7 @@ segmentAnalytics = "1.13.2"
 appcompat = "1.6.1"
 constraintlayout = "2.1.4"
 coreKtx = "1.12.0"
+serializationJson = "1.6.0"
 material = "1.10.0"
 junitBom = "5.8.2"
 junit = "4.13.2"
@@ -25,6 +26,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationJson" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 segment-analytics = { module = "com.segment.analytics.kotlin:android", version.ref = "segmentAnalytics" }
 survicate-sdk = { module = "com.survicate:survicate-sdk", version.ref = "survicateSdk" }

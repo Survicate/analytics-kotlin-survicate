@@ -43,6 +43,7 @@ dependencies {
 
 // Partner Dependencies
 dependencies {
+    implementation(libs.serialization.json)
     implementation(libs.survicate.sdk)
 }
 

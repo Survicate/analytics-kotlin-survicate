@@ -13,22 +13,32 @@ import com.survicate.surveys.Survicate
 import com.survicate.surveys.traits.UserTrait
 import kotlinx.serialization.Serializable
 
+private const val USER_ID_KEY = "user_id"
+
 class SurvicateDestination(private val context: Context) : DestinationPlugin() {
+
+    private var initialized = false
+
     override val key: String = "Survicate"
 
     override fun update(settings: Settings, type: Plugin.UpdateType) {
         super.update(settings, type)
-        if (type == Plugin.UpdateType.Initial) {
+
+        // It looks like initial update can be called twice (bug?)
+        // when initializing Segment inside Application's onCreate method.
+        // That's why we use additional [initialized] flag.
+        if (type == Plugin.UpdateType.Initial && !initialized) {
             val workspaceKey = settings.destinationSettings<SurvicateSettings>(key)?.workspaceKey
             if (workspaceKey != null) {
                 Survicate.setWorkspaceKey(workspaceKey)
             }
             Survicate.init(context.applicationContext)
+            initialized = true
         }
     }
 
     override fun identify(payload: IdentifyEvent): BaseEvent {
-        val userIdTrait = UserTrait.UserId(payload.userId)
+        val userIdTrait = UserTrait(USER_ID_KEY, payload.userId)
         val otherTraits = payload.traits
             .filter { it.value.safeJsonPrimitive != null }
             .map { UserTrait(it.key, it.value.safeJsonPrimitive!!.content) }
