@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Segment Test</string>
-    <string name="log_screen">Log screen</string>
+    <string name="event_type">Event type</string>
+    <string name="event_value">Event value</string>
+    <string name="test_value">test</string>
+    <string name="log_event">Log event</string>
+    <string name="reset">Reset</string>
 </resources>
