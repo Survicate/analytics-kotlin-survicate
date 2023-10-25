@@ -6,6 +6,8 @@ plugins {
     `maven-publish`
 }
 
+ext.set("lib_version", "3.0.4")
+
 android {
     namespace = "com.segment.analytics.kotlin.destinations.survicate"
 

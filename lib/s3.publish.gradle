@@ -43,7 +43,7 @@ publishing {
         release(MavenPublication) {
             groupId 'com.survicate'
             artifactId 'survicate-segment-analytics-kotlin'
-            version '3.0.4'
+            version lib_version
 
             artifact androidJavadocsJar
 
