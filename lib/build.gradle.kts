@@ -6,8 +6,6 @@ plugins {
     `maven-publish`
 }
 
-val VERSION_NAME: String by project
-
 android {
     namespace = "com.segment.analytics.kotlin.destinations.survicate"
 
@@ -19,8 +17,6 @@ android {
 
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-
-        buildConfigField("String", "VERSION_NAME", "\"$VERSION_NAME\"")
     }
 
     buildTypes {
@@ -39,7 +35,6 @@ android {
 
     // documentation
     tasks.dokkaHtml.configure {
-        // "$projectDir/../docs")
         outputDirectory.set(buildDir.resolve("dokka"))
     }
 
