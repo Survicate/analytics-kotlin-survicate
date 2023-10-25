@@ -2,13 +2,14 @@
  * Steps to publish:
  * 1. Make sure that you have a valid s3.maven.properties file (it is not committed to git,
  *    use s3.maven.properties.demo as a template)
- * 2. Change sdk_version in the build.gradle (on the sdk lib project level)
+ * 2. Bump version inside the publishing block
  * 3. Call ./gradlew :lib:cleanBuildDocPublish in order to make sure it builds correctly (and get rid of
  *    possible errors) and next upload to s3 repo.
  * 4. Alternatively run task cleanBuildDocPublish in the AndroidStudio
  */
 
-task androidJavadocsJar(type: Jar, dependsOn: dokkaJavadoc) {
+tasks.register('androidJavadocsJar', Jar) {
+    dependsOn dokkaJavadoc
     archiveClassifier.set('javadoc')
     from dokkaJavadoc.outputDirectory
 }
@@ -24,7 +25,6 @@ publishing {
     def password = properties.getProperty("maven.password")
 
     repositories {
-        // Local maven repo to share AAR with dependencies locally
         maven {
             name = 'survicateMaven'
             url "s3://repo.survicate.com/"
