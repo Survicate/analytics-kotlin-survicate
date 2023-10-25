@@ -2,10 +2,11 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    id("mvn-publish")
+    alias(libs.plugins.dokka)
+    `maven-publish`
 }
 
-val VERSION_NAME: String by project
+ext.set("lib_version", "3.0.4")
 
 android {
     namespace = "com.segment.analytics.kotlin.destinations.survicate"
@@ -18,8 +19,6 @@ android {
 
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-
-        buildConfigField("String", "VERSION_NAME", "\"$VERSION_NAME\"")
     }
 
     buildTypes {
@@ -34,6 +33,15 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    // documentation
+    tasks.dokkaHtml.configure {
+        outputDirectory.set(buildDir.resolve("dokka"))
+    }
+
+    publishing {
+        singleVariant("release")
     }
 }
 
@@ -62,36 +70,4 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-// required for mvn-publish
-// too bad we can't move it into mvn-publish plugin because `android`is only accessible here
-tasks {
-    val sourceFiles = android.sourceSets.getByName("main").java.srcDirs
-
-    register<Javadoc>("withJavadoc") {
-        isFailOnError = false
-
-        setSource(sourceFiles)
-
-        // add Android runtime classpath
-        android.bootClasspath.forEach { classpath += project.fileTree(it) }
-
-        // add classpath for all dependencies
-        android.libraryVariants.forEach { variant ->
-            variant.javaCompileProvider.get().classpath.files.forEach { file ->
-                classpath += project.fileTree(file)
-            }
-        }
-    }
-
-    register<Jar>("withJavadocJar") {
-        archiveClassifier.set("javadoc")
-        dependsOn(named("withJavadoc"))
-        val destination = named<Javadoc>("withJavadoc").get().destinationDir
-        from(destination)
-    }
-
-    register<Jar>("withSourcesJar") {
-        archiveClassifier.set("sources")
-        from(sourceFiles)
-    }
-}
+apply(from = "s3.publish.gradle")
