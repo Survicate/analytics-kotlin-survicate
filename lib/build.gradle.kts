@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    id("org.jetbrains.dokka")
-    id("maven-publish")
+    alias(libs.plugins.dokka)
+    `maven-publish`
 }
 
 val VERSION_NAME: String by project
