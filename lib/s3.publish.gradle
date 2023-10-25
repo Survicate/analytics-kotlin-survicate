@@ -2,7 +2,7 @@
  * Steps to publish:
  * 1. Make sure that you have a valid s3.maven.properties file (it is not committed to git,
  *    use s3.maven.properties.demo as a template)
- * 2. Bump version inside the publishing block
+ * 2. Bump lib_version inside the build.gradle of the lib module.
  * 3. Call ./gradlew :lib:cleanBuildDocPublish in order to make sure it builds correctly (and get rid of
  *    possible errors) and next upload to s3 repo.
  * 4. Alternatively run task cleanBuildDocPublish in the AndroidStudio
