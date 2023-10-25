@@ -1,0 +1,65 @@
+/**
+ * Steps to publish:
+ * 1. Make sure that you have a valid s3.maven.properties file (it is not committed to git,
+ *    use s3.maven.properties.demo as a template)
+ * 2. Change sdk_version in the build.gradle (on the sdk lib project level)
+ * 3. Call ./gradlew :lib:cleanBuildDocPublish in order to make sure it builds correctly (and get rid of
+ *    possible errors) and next upload to s3 repo.
+ * 4. Alternatively run task cleanBuildDocPublish in the AndroidStudio
+ */
+
+task androidJavadocsJar(type: Jar, dependsOn: dokkaJavadoc) {
+    archiveClassifier.set('javadoc')
+    from dokkaJavadoc.outputDirectory
+}
+
+publishing {
+    Properties properties = new Properties()
+    def propertiesFile = file('s3.maven.properties')
+    if (propertiesFile.exists()) {
+        properties.load(propertiesFile).newDataInputStream()
+    }
+
+    def user = properties.getProperty("maven.user")
+    def password = properties.getProperty("maven.password")
+
+    repositories {
+        // Local maven repo to share AAR with dependencies locally
+        maven {
+            name = 'survicateMaven'
+            url "s3://repo.survicate.com/"
+            credentials(AwsCredentials) {
+                accessKey user
+                secretKey password
+            }
+        }
+        maven {
+            name = 'localMaven'
+            url "$buildDir/localMaven"
+        }
+    }
+
+    publications {
+        release(MavenPublication) {
+            groupId 'com.survicate'
+            artifactId 'survicate-segment-analytics-kotlin'
+            version '3.0.4'
+
+            artifact androidJavadocsJar
+
+            afterEvaluate {
+                from components.release
+            }
+        }
+    }
+}
+
+// Publish to Survicate S3 maven
+task cleanBuildDocPublish(type: GradleBuild) {
+    tasks = ['clean', 'assembleRelease', 'publishReleasePublicationToSurvicateMavenRepository']
+}
+
+// Publish locally
+task cleanBuildDocPublishLocal(type: GradleBuild) {
+    tasks = ['clean', 'assembleRelease', 'publishReleasePublicationToLocalMavenRepository']
+}

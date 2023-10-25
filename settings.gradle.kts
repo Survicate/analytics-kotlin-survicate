@@ -16,5 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "analytics-kotlin-survicate"
 include(":lib")
-includeBuild("publishing-plugins")
 include(":testapp")
