@@ -3,7 +3,7 @@ The plugin allows you to add a device mode support for Survicate in your applica
 
 ## Adding the dependency
 
-Add Survicate maven:
+Define Maven repository
 ```
 allprojects {
     repositories {
@@ -13,7 +13,14 @@ allprojects {
 }
 ```
 
-**[TODO]** Add gradle dependency
+Add dependency to your app's build.gradle file
+
+```
+dependencies {
+    // ...
+    implementation 'com.survicate:survicate-segment-analytics-kotlin:<latest_version>'
+}
+```
 
 Note that there is no need to include Survicate library, because it will be added as a transitive dependency.
 
