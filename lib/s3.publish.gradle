@@ -47,6 +47,17 @@ publishing {
 
             artifact androidJavadocsJar
 
+            pom {
+                name = "Analytics-Kotlin Survicate"
+                url = "https://github.com/Survicate/analytics-kotlin-survicate"
+                licenses {
+                    license {
+                        name = "MIT License"
+                        url = "http://opensource.org/licenses/MIT"
+                    }
+                }
+            }
+
             afterEvaluate {
                 from components.release
             }
