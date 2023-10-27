@@ -1,5 +1,7 @@
 # Analytics-Kotlin Survicate
-The plugin allows you to add a device mode support for Survicate in your applications via [Analytics-Kotlin](https://github.com/segmentio/analytics-kotlin)
+[Survicate](https://survicate.com/) is an all-in-one customer feedback platform that helps you collect and act on feedback from your customers. It helps you understand your customers and improve their experience with your product or service.
+
+Add Survicate device mode support to your applications using this plugin for [Analytics-Kotlin](https://github.com/segmentio/analytics-kotlin).
 
 ## Adding the dependency
 

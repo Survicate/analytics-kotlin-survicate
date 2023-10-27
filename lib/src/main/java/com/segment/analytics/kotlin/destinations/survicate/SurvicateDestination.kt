@@ -17,6 +17,7 @@ private const val USER_ID_KEY = "user_id"
 
 class SurvicateDestination(private val context: Context) : DestinationPlugin() {
 
+    // To make sure we initialize Survicate SDK only once
     private var initialized = false
 
     override val key: String = "Survicate"
@@ -24,9 +25,6 @@ class SurvicateDestination(private val context: Context) : DestinationPlugin() {
     override fun update(settings: Settings, type: Plugin.UpdateType) {
         super.update(settings, type)
 
-        // It looks like initial update can be called twice (bug?)
-        // when initializing Segment inside Application's onCreate method.
-        // That's why we use additional [initialized] flag.
         if (type == Plugin.UpdateType.Initial && !initialized) {
             val workspaceKey = settings.destinationSettings<SurvicateSettings>(key)?.workspaceKey
             if (workspaceKey != null) {
