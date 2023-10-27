@@ -17,21 +17,17 @@ private const val USER_ID_KEY = "user_id"
 
 class SurvicateDestination(private val context: Context) : DestinationPlugin() {
 
-    // To make sure we initialize Survicate SDK only once
-    private var initialized = false
-
     override val key: String = "Survicate"
 
     override fun update(settings: Settings, type: Plugin.UpdateType) {
         super.update(settings, type)
 
-        if (type == Plugin.UpdateType.Initial && !initialized) {
+        if (type == Plugin.UpdateType.Initial) {
             val workspaceKey = settings.destinationSettings<SurvicateSettings>(key)?.workspaceKey
             if (workspaceKey != null) {
                 Survicate.setWorkspaceKey(workspaceKey)
             }
             Survicate.init(context.applicationContext)
-            initialized = true
         }
     }
 
