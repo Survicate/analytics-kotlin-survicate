@@ -6,7 +6,7 @@ plugins {
     `maven-publish`
 }
 
-ext.set("lib_version", "3.0.4")
+ext.set("lib_version", "4.1.0")
 
 android {
     namespace = "com.segment.analytics.kotlin.destinations.survicate"
@@ -64,6 +64,7 @@ dependencies {
     testRuntimeOnly(libs.junit.vintage.engine)
     testImplementation(platform(libs.junit.bom))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation(libs.kotlin.reflect)
 }
 
 tasks.withType<Test> {

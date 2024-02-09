@@ -17,7 +17,7 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import kotlin.reflect.jvm.kotlinFunction
+import kotlin.reflect.full.declaredFunctions
 
 class SurvicateDestinationTest {
 
@@ -71,6 +71,8 @@ class SurvicateDestinationTest {
             traits = buildJsonObject {
                 put("name", "John Doe")
                 put("age", 50)
+                put("active", true)
+                put("registration_date", "2024-02-09T10:30:00+00:00")
             }
         )
 
@@ -79,7 +81,9 @@ class SurvicateDestinationTest {
         val expectedTraits = listOf(
             UserTrait("user_id", "testUserId"),
             UserTrait("name", "John Doe"),
-            UserTrait("age", "50")
+            UserTrait("age", 50),
+            UserTrait("active", true),
+            UserTrait("registration_date", "2024-02-09T10:30:00+00:00")
         )
         verify { Survicate.setUserTraits(expectedTraits) }
     }
@@ -126,11 +130,11 @@ class SurvicateDestinationTest {
     }
 
     private fun mockInit() {
-        val ref = Survicate::class.java.declaredMethods
-            .mapNotNull { it.kotlinFunction }
-            .first { it.name == "init" && it.parameters.count() == 1 }
+        val initFunction = Survicate::class.declaredFunctions.first {
+            it.name == "init" && it.parameters.size == 1
+        }
 
-        mockkStatic(ref)
+        mockkStatic(initFunction)
 
         every { Survicate.init(any()) } answers { }
         every { anyContext.applicationContext } returns applicationContext
