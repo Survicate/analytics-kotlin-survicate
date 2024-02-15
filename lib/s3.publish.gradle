@@ -5,7 +5,6 @@
  * 2. Bump lib_version inside the build.gradle of the lib module.
  * 3. Call ./gradlew :lib:cleanBuildDocPublish in order to make sure it builds correctly (and get rid of
  *    possible errors) and next upload to s3 repo.
- * 4. Alternatively run task cleanBuildDocPublish in the AndroidStudio
  */
 
 tasks.register('androidJavadocsJar', Jar) {
@@ -32,10 +31,6 @@ publishing {
                 accessKey user
                 secretKey password
             }
-        }
-        maven {
-            name = 'localMaven'
-            url "$buildDir/localMaven"
         }
     }
 
@@ -66,11 +61,11 @@ publishing {
 }
 
 // Publish to Survicate S3 maven
-task cleanBuildDocPublish(type: GradleBuild) {
+tasks.register('cleanBuildDocPublish', GradleBuild) {
     tasks = ['clean', 'assembleRelease', 'publishReleasePublicationToSurvicateMavenRepository']
 }
 
-// Publish locally
+// Publish locally into ~/.m2/repository
 task cleanBuildDocPublishLocal(type: GradleBuild) {
-    tasks = ['clean', 'assembleRelease', 'publishReleasePublicationToLocalMavenRepository']
+    tasks = ['clean', 'assembleRelease', 'publishReleasePublicationToMavenLocal']
 }
