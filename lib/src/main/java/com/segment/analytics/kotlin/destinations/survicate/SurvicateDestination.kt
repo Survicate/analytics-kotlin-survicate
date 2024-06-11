@@ -43,7 +43,13 @@ class SurvicateDestination(private val context: Context) : DestinationPlugin() {
     }
 
     override fun track(payload: TrackEvent): BaseEvent {
-        Survicate.invokeEvent(payload.event)
+        val properties = HashMap<String, String>()
+        payload.properties
+            .filter { it.value.safeJsonPrimitive != null && it.value.safeJsonPrimitive!!.isString}
+            .forEach { properties[it.key] = it.value.safeJsonPrimitive!!.content }
+
+        Survicate.invokeEvent(payload.event, properties)
+
         return payload
     }
 
