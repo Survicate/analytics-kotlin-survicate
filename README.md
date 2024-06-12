@@ -66,7 +66,7 @@ In the SurvicateDestination plugin, the `identify` event from Segment is transfe
 
 _**track**_
 
-The `track` method from Segment is used as the `invokeEvent` method in Survicate. This means that when you track an event in Segment, it will be invoked in Survicate.
+The `track` method from Segment is used as the `invokeEvent` method in Survicate. This means that when you track an event in Segment, it will be invoked in Survicate. Moreover every String property passed in track properties argument will be passed to Survicate SDK.
 
 _**screen**_
 

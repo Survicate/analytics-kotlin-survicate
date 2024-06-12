@@ -89,16 +89,26 @@ class SurvicateDestinationTest {
     }
 
     @Test
-    fun `notifies Survicate about event when track event recorded`() {
+    fun `notifies Survicate about event with properties when track event recorded`() {
         mockInvokeEvent()
         val trackEvent = TrackEvent(
-            properties = emptyJsonObject,
+            properties = buildJsonObject {
+                put("name", "John Doe")
+                put("age", 50)
+                put("active", true)
+                put("registration_date", "2024-02-09T10:30:00+00:00")
+            },
             event = "testEvent"
         )
 
         tested.track(trackEvent)
 
-        verify { Survicate.invokeEvent("testEvent") }
+        val expectedProperties = mapOf(
+            "name" to "John Doe",
+            "registration_date" to "2024-02-09T10:30:00+00:00"
+        )
+
+        verify { Survicate.invokeEvent("testEvent", expectedProperties) }
     }
 
     @Test
@@ -146,8 +156,8 @@ class SurvicateDestinationTest {
     }
 
     private fun mockInvokeEvent() {
-        mockkStatic(Survicate::invokeEvent)
-        every { Survicate.invokeEvent(any()) } answers { }
+        mockkStatic(Survicate::class)
+        every { Survicate.invokeEvent(any(), any()) } answers { }
     }
 
     private fun mockEnterScreen() {
