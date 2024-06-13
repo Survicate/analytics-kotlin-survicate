@@ -14,22 +14,14 @@ tasks.register('androidJavadocsJar', Jar) {
 }
 
 publishing {
-    Properties properties = new Properties()
-    def propertiesFile = file('s3.maven.properties')
-    if (propertiesFile.exists()) {
-        properties.load(propertiesFile.newDataInputStream())
-    }
-
-    def user = properties.getProperty("maven.user")
-    def password = properties.getProperty("maven.password")
-
     repositories {
         maven {
             name = 'survicateMaven'
             url "s3://repo.survicate.com/"
-            credentials(AwsCredentials) {
-                accessKey user
-                secretKey password
+
+            authentication {
+                // role based authentication
+                awsIm(AwsImAuthentication)
             }
         }
     }
