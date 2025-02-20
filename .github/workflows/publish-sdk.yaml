@@ -1,0 +1,36 @@
+name: Publish SDK
+
+on: workflow_dispatch
+
+# Required by configure-aws-credentials
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publishSdk:
+    # On ubuntu-latest the dokkaJavadoc randomly fails with the following error:
+    # "Recursion detected on input: getDisplayer under LockBasedStorageManager".
+    # See https://github.com/Kotlin/dokka/issues/3317
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Validate Gradle wrapper
+        uses: gradle/actions/wrapper-validation@v3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ROLE_NAME }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Publish SDK
+        run: ./gradlew :lib:cleanBuildDocPublish

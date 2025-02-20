@@ -6,7 +6,7 @@ plugins {
     `maven-publish`
 }
 
-ext.set("lib_version", "5.0.0")
+ext.set("lib_version", "6.0.0")
 
 android {
     namespace = "com.segment.analytics.kotlin.destinations.survicate"
@@ -63,7 +63,7 @@ dependencies {
     // Add JUnit4 legacy dependencies.
     testRuntimeOnly(libs.junit.vintage.engine)
     testImplementation(platform(libs.junit.bom))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation(libs.junit.jupiter)
     testImplementation(libs.kotlin.reflect)
 }
 
