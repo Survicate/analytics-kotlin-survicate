@@ -4,7 +4,7 @@ compileSdk = "34"
 targetSdk = "34"
 kotlin = "1.9.10"
 gradlePlugin = "8.2.2"
-survicateSdk = "5.0.0"
+survicateSdk = "6.0.0"
 segmentAnalytics = "1.14.2"
 appcompat = "1.6.1"
 constraintlayout = "2.1.4"
@@ -28,6 +28,7 @@ dokka = { id = "org.jetbrains.dokka", version.ref = "dokkaPlugin" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationJson" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 segment-analytics = { module = "com.segment.analytics.kotlin:android", version.ref = "segmentAnalytics" }

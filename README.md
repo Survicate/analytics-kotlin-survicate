@@ -26,6 +26,15 @@ dependencies {
 
 Note that there is no need to include Survicate library, because it will be added as a transitive dependency.
 
+If you want to use a specific version of Survicate SDK, you can include the desired version manually. Be sure to include the Survicate SDK version that is compatible with the Survicate plugin (same major version).
+
+```
+dependencies {
+    // ...
+    implementation 'com.survicate:survicate-sdk:<desired_version>'
+}
+```
+
 ## Configuration
 
 First you need to provide Survicate workspace key.
