@@ -1,4 +1,3 @@
-import groovy.lang.MissingPropertyException
 import java.util.Properties
 
 plugins {
