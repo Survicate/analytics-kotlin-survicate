@@ -1,20 +1,22 @@
 name: Testing
 
-on: [push]
+on: [ push ]
 
 jobs:
   unitTests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK
-        uses: actions/setup-java@v3
+      - uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v1
+        uses: gradle/actions/wrapper-validation@v3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
       - name: Run unit tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: :lib:testDebugUnitTest
+        run: ./gradlew :lib:testDebugUnitTest
