@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupEventTypeSpinner() {
-        val eventTypes = TestEventType.values()
+        val eventTypes = TestEventType.entries.toTypedArray()
         spinnerEventType.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, eventTypes)
     }
 

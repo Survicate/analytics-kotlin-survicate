@@ -50,9 +50,6 @@ android {
 dependencies {
     implementation(project(mapOf("path" to ":lib")))
     implementation(libs.segment.analytics)
-
-    implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.constraintlayout)
 }
