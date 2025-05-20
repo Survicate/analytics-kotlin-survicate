@@ -1,12 +1,9 @@
 /**
  * Steps to publish:
- * 1. Make sure that you have a valid s3.maven.properties file (it is not committed to git,
- *    use s3.maven.properties.demo as a template)
- * 2. Bump lib_version inside the build.gradle of the lib module.
- * 3. Call ./gradlew :lib:cleanBuildDocPublish in order to make sure it builds correctly (and get rid of
- *    possible errors) and next upload to s3 repo.
+ * 1. Bump lib_version inside the build.gradle of the lib module.
+ * 2. Publish the SDK locally to test the artifact build process: ./gradlew :lib:cleanBuildDocPublishLocal
+ * 3. Publish to Survicate Maven by running the "Publish SDK" workflow.
  */
-
 tasks.register('androidJavadocsJar', Jar) {
     dependsOn dokkaJavadoc
     archiveClassifier.set('javadoc')
