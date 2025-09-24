@@ -63,6 +63,17 @@ analytics = Analytics(segmentKey, applicationContext) {
 analytics.add(SurvicateDestination(applicationContext))
 ```
 
+### Auto-login User on Initialization
+
+You can optionally enable automatic user login on initialization, which will set the user_id trait based on Segment's userId when the destination initializes:
+
+```kotlin
+analytics.add(
+    SurvicateDestination(applicationContext)
+        .enableLoginUserOnInitialization(true)
+)
+```
+
 Make sure to keep only one instance of the `Analytics` (e.g. initialize it inside Application's onCreate method). This is important, because the Survicate SDK underneath can only be initialized once.
 
 Now you can use the Analytics as usual, having the events mapped to Survicate SDK as described below.
