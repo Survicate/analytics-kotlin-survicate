@@ -16,8 +16,8 @@ import io.mockk.mockkStatic
 import io.mockk.verify
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
-import org.junit.Ignore
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import kotlin.reflect.full.declaredFunctions
 
@@ -66,8 +66,8 @@ class SurvicateDestinationTest {
         verify(exactly = 0) { Survicate.init(any()) }
     }
 
-    @Ignore("Issue with mocking internal components makes test fail")
-    @Test
+    @Disabled("Issue with mocking internal components makes test fail")
+    @Test()
     fun `logins user on initialization when enabled and userId is present`() {
         val integrationSettings = Settings(
             integrations = buildJsonObject {
