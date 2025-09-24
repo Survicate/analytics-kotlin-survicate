@@ -63,6 +63,17 @@ analytics = Analytics(segmentKey, applicationContext) {
 analytics.add(SurvicateDestination(applicationContext))
 ```
 
+### Auto-login User on Initialization
+
+You can optionally enable automatic user login on initialization, which will set the user_id trait based on Segment's userId when the destination initializes:
+
+```kotlin
+analytics.add(
+    SurvicateDestination(applicationContext)
+        .enableLoginUserOnInitialization(true)
+)
+```
+
 Make sure to keep only one instance of the `Analytics` (e.g. initialize it inside Application's onCreate method). This is important, because the Survicate SDK underneath can only be initialized once.
 
 Now you can use the Analytics as usual, having the events mapped to Survicate SDK as described below.
@@ -84,3 +95,13 @@ Similarly, the screen method from Segment is used as the `enterScreen` method in
 _**reset**_
 
 The `reset` method from Segment is used as the reset method in Survicate. This means that when you reset the Segment client, the Survicate client will also be reset.
+
+## Issues
+
+Got an Issue?
+
+To make things more streamlined, we’ve transitioned our issue reporting to our customer support platform. If you encounter any bugs or have feedback, please reach out to our customer support team. Your insights are invaluable to us, and we’re here to help ensure your experience is top-notch!
+
+Contact us via Intercom in the application, or drop us an email at: [support@survicate.com]
+
+Thank you for your support and understanding!

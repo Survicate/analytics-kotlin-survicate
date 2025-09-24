@@ -18,6 +18,18 @@ private const val USER_ID_KEY = "user_id"
 class SurvicateDestination(private val context: Context) : DestinationPlugin() {
 
     override val key: String = "Survicate"
+    private var loginUserOnInitialization: Boolean = false
+
+    /**
+     * Automatically sets user_id based on Segment's userId upon initialization.
+     *
+     * @param enabled Set to true to enable logging in the user on initialization.
+     * @return The SurvicateDestination instance for chaining.
+     */
+    fun enableLoginUserOnInitialization(enabled: Boolean): SurvicateDestination {
+        this.loginUserOnInitialization = enabled
+        return this
+    }
 
     override fun update(settings: Settings, type: Plugin.UpdateType) {
         super.update(settings, type)
@@ -28,6 +40,14 @@ class SurvicateDestination(private val context: Context) : DestinationPlugin() {
                 Survicate.setWorkspaceKey(workspaceKey)
             }
             Survicate.init(context.applicationContext)
+
+            if (loginUserOnInitialization) {
+                val userId = analytics.userId()
+                if (!userId.isNullOrBlank()) {
+                    val userIdTrait = UserTrait(USER_ID_KEY, userId)
+                    Survicate.setUserTrait(userIdTrait)
+                }
+            }
         }
     }
 
