@@ -37,7 +37,7 @@ class SurvicateDestination(private val context: Context) : DestinationPlugin() {
         if (type == Plugin.UpdateType.Initial) {
             val workspaceKey = settings.destinationSettings<SurvicateSettings>(key)?.workspaceKey
             if (workspaceKey != null) {
-                Survicate.setWorkspaceKey("7fa89158babd1961d1082aa93728d431")
+                Survicate.setWorkspaceKey(workspaceKey)
             }
             Survicate.init(context.applicationContext)
 
