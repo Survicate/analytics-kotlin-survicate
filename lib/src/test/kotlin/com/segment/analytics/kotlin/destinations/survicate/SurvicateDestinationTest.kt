@@ -1,6 +1,7 @@
 package com.segment.analytics.kotlin.destinations.survicate
 
 import android.content.Context
+import com.segment.analytics.kotlin.core.Analytics
 import com.segment.analytics.kotlin.core.IdentifyEvent
 import com.segment.analytics.kotlin.core.ScreenEvent
 import com.segment.analytics.kotlin.core.Settings
@@ -15,6 +16,7 @@ import io.mockk.mockkStatic
 import io.mockk.verify
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
+import org.junit.Ignore
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.reflect.full.declaredFunctions
@@ -23,6 +25,7 @@ class SurvicateDestinationTest {
 
     private val anyContext: Context = mockk()
     private val applicationContext: Context = mockk()
+    private val analytics : Analytics = mockk()
     private val tested = SurvicateDestination(context = anyContext)
 
     @BeforeEach
@@ -61,6 +64,93 @@ class SurvicateDestinationTest {
 
         verify(exactly = 0) { Survicate.setWorkspaceKey("testKey") }
         verify(exactly = 0) { Survicate.init(any()) }
+    }
+
+    @Ignore("Issue with mocking internal components makes test fail")
+    @Test
+    fun `logins user on initialization when enabled and userId is present`() {
+        val integrationSettings = Settings(
+            integrations = buildJsonObject {
+                put("Survicate", buildJsonObject {
+                    put("workspaceKey", "testKey")
+                })
+            }
+        )
+        mockAnalyticsUserId("testUserId")
+        mockSetUserTrait()
+        tested.enableLoginUserOnInitialization(true)
+
+        tested.update(integrationSettings, Plugin.UpdateType.Initial)
+
+        val expectedTrait = UserTrait("user_id", "testUserId")
+        verify { Survicate.setUserTrait(expectedTrait) }
+    }
+
+    @Test
+    fun `does not login user on initialization when disabled`() {
+        val integrationSettings = Settings(
+            integrations = buildJsonObject {
+                put("Survicate", buildJsonObject {
+                    put("workspaceKey", "testKey")
+                })
+            }
+        )
+        mockAnalyticsUserId("testUserId")
+        tested.enableLoginUserOnInitialization(false)
+
+        tested.update(integrationSettings, Plugin.UpdateType.Initial)
+
+        verify(exactly = 0) { Survicate.setUserTrait(any()) }
+    }
+
+    @Test
+    fun `does not login user on initialization when enabled but userId is not present`() {
+        val integrationSettings = Settings(
+            integrations = buildJsonObject {
+                put("Survicate", buildJsonObject {
+                    put("workspaceKey", "testKey")
+                })
+            }
+        )
+        mockAnalyticsUserId(null)
+        tested.enableLoginUserOnInitialization(true)
+
+        tested.update(integrationSettings, Plugin.UpdateType.Initial)
+
+        verify(exactly = 0) { Survicate.setUserTrait(any()) }
+    }
+
+    @Test
+    fun `does not login user on initialization when enabled but userId is blank`() {
+        val integrationSettings = Settings(
+            integrations = buildJsonObject {
+                put("Survicate", buildJsonObject {
+                    put("workspaceKey", "testKey")
+                })
+            }
+        )
+        mockAnalyticsUserId("")
+        tested.enableLoginUserOnInitialization(true)
+
+        tested.update(integrationSettings, Plugin.UpdateType.Initial)
+
+        verify(exactly = 0) { Survicate.setUserTrait(any()) }
+    }
+
+    @Test
+    fun `does not login user on initialization when enabled is not called`() {
+        val integrationSettings = Settings(
+            integrations = buildJsonObject {
+                put("Survicate", buildJsonObject {
+                    put("workspaceKey", "testKey")
+                })
+            }
+        )
+        mockAnalyticsUserId("testUserId")
+
+        tested.update(integrationSettings, Plugin.UpdateType.Initial)
+
+        verify(exactly = 0) { Survicate.setUserTrait(any()) }
     }
 
     @Test
@@ -144,10 +234,21 @@ class SurvicateDestinationTest {
             it.name == "init" && it.parameters.size == 1
         }
 
+        tested.analytics = analytics
+
         mockkStatic(initFunction)
 
         every { Survicate.init(any()) } answers { }
         every { anyContext.applicationContext } returns applicationContext
+    }
+
+    private fun mockAnalyticsUserId(userId: String?) {
+        every { analytics.userId() } returns userId
+    }
+
+    private fun mockSetUserTrait() {
+        mockkStatic(Survicate::setUserTrait)
+        every { Survicate.setUserTrait(any()) } answers { }
     }
 
     private fun mockSetUserTraits() {

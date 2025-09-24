@@ -41,10 +41,12 @@ class SurvicateDestination(private val context: Context) : DestinationPlugin() {
             }
             Survicate.init(context.applicationContext)
 
-            val userId = analytics.userId()
-            if (loginUserOnInitialization && !userId.isNullOrBlank()) {
-                val userIdTrait = UserTrait(USER_ID_KEY, userId)
-                Survicate.setUserTrait(userIdTrait)
+            if (loginUserOnInitialization) {
+                val userId = analytics.userId()
+                if (!userId.isNullOrBlank()) {
+                    val userIdTrait = UserTrait(USER_ID_KEY, userId)
+                    Survicate.setUserTrait(userIdTrait)
+                }
             }
         }
     }
