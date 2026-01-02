@@ -13,25 +13,31 @@ import com.survicate.surveys.traits.UserTrait
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import io.mockk.verify
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import kotlin.reflect.full.declaredFunctions
 
 class SurvicateDestinationTest {
 
     private val anyContext: Context = mockk()
     private val applicationContext: Context = mockk()
-    private val analytics : Analytics = mockk()
+    private val analytics: Analytics = mockk()
     private val tested = SurvicateDestination(context = anyContext)
 
     @BeforeEach
     fun setup() {
+        mockkStatic(Survicate::class)
         mockSetWorkspaceKey()
         mockInit()
+    }
+
+    @AfterEach
+    fun tearDown() {
+        unmockkStatic(Survicate::class)
     }
 
     @Test
@@ -65,9 +71,8 @@ class SurvicateDestinationTest {
         verify(exactly = 0) { Survicate.setWorkspaceKey("testKey") }
         verify(exactly = 0) { Survicate.init(any()) }
     }
-
-    @Disabled("Issue with mocking internal components makes test fail")
-    @Test()
+    
+    @Test
     fun `logins user on initialization when enabled and userId is present`() {
         val integrationSettings = Settings(
             integrations = buildJsonObject {
@@ -225,21 +230,13 @@ class SurvicateDestinationTest {
     }
 
     private fun mockSetWorkspaceKey() {
-        mockkStatic(Survicate::setWorkspaceKey)
         every { Survicate.setWorkspaceKey(any()) } answers { }
     }
 
     private fun mockInit() {
-        val initFunction = Survicate::class.declaredFunctions.first {
-            it.name == "init" && it.parameters.size == 1
-        }
-
-        tested.analytics = analytics
-
-        mockkStatic(initFunction)
-
         every { Survicate.init(any()) } answers { }
         every { anyContext.applicationContext } returns applicationContext
+        tested.analytics = analytics
     }
 
     private fun mockAnalyticsUserId(userId: String?) {
@@ -247,27 +244,22 @@ class SurvicateDestinationTest {
     }
 
     private fun mockSetUserTrait() {
-        mockkStatic(Survicate::setUserTrait)
         every { Survicate.setUserTrait(any()) } answers { }
     }
 
     private fun mockSetUserTraits() {
-        mockkStatic(Survicate::setUserTraits)
         every { Survicate.setUserTraits(any()) } answers { }
     }
 
     private fun mockInvokeEvent() {
-        mockkStatic(Survicate::class)
         every { Survicate.invokeEvent(any(), any()) } answers { }
     }
 
     private fun mockEnterScreen() {
-        mockkStatic(Survicate::enterScreen)
         every { Survicate.enterScreen(any()) } answers { }
     }
 
     private fun mockReset() {
-        mockkStatic(Survicate::reset)
         every { Survicate.reset() } answers { }
     }
 
