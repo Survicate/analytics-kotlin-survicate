@@ -64,7 +64,6 @@ dependencies {
     testRuntimeOnly(libs.junit.vintage.engine)
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
-    testImplementation(libs.kotlin.reflect)
 }
 
 tasks.withType<Test> {

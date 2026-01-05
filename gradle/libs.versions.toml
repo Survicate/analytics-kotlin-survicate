@@ -35,4 +35,3 @@ junit-bom = { module = "org.junit:junit-bom", version.ref = "junitBom" }
 junit = { module = "junit:junit", version.ref = "junit" }
 junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junitVintageEngine" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
