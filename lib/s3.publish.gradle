@@ -1,13 +1,14 @@
 /**
  * Steps to publish:
  * 1. Bump lib_version inside the build.gradle of the lib module.
- * 2. Publish the SDK locally to test the artifact build process: ./gradlew :lib:cleanBuildDocPublishLocal
+ * 2. Publish the SDK locally to test the artifact build process: ./gradlew clean :lib:publishLocal
  * 3. Publish to Survicate Maven by running the "Publish SDK" workflow.
  */
+// https://kotlin.github.io/dokka/2.1.0/dokka-gradle-plugin/build-classic-java-and-javadoc-jars/
 tasks.register('androidJavadocsJar', Jar) {
-    dependsOn dokkaJavadoc
+    dependsOn tasks.named("dokkaGeneratePublicationJavadoc")
+    from layout.buildDirectory.dir("docs/javadoc")
     archiveClassifier.set('javadoc')
-    from dokkaJavadoc.outputDirectory
 }
 
 publishing {
@@ -50,11 +51,11 @@ publishing {
 }
 
 // Publish to Survicate S3 maven
-tasks.register('cleanBuildDocPublish', GradleBuild) {
-    tasks = ['clean', 'assembleRelease', 'publishReleasePublicationToSurvicateMavenRepository']
+tasks.register('publishProduction') {
+    dependsOn 'publishReleasePublicationToSurvicateMavenRepository'
 }
 
 // Publish locally into ~/.m2/repository
-task cleanBuildDocPublishLocal(type: GradleBuild) {
-    tasks = ['clean', 'assembleRelease', 'publishReleasePublicationToMavenLocal']
+tasks.register('publishLocal') {
+    dependsOn 'publishReleasePublicationToMavenLocal'
 }
