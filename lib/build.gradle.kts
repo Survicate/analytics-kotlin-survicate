@@ -1,8 +1,10 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.dokka)
+    alias(libs.plugins.dokka.javadoc)
     `maven-publish`
 }
 
@@ -31,17 +33,21 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    // documentation
-    tasks.dokkaHtml.configure {
-        outputDirectory.set(buildDir.resolve("dokka"))
-    }
 
     publishing {
         singleVariant("release")
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
+    }
+}
+
+dokka {
+    dokkaPublications.javadoc {
+        outputDirectory.set(layout.buildDirectory.dir("docs/javadoc"))
     }
 }
 
@@ -64,6 +70,7 @@ dependencies {
     testRuntimeOnly(libs.junit.vintage.engine)
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 tasks.withType<Test> {
